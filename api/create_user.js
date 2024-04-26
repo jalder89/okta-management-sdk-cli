@@ -14,13 +14,13 @@ function createUser(firstName, lastName, email, login, password) {
           firstName: firstName,
           lastName: lastName,
           email: email,
-          login: login,
+          login: email,
         },
         credentials: {
           password: { value: password },
         },
       },
-    });
+    })
 }
 
 export default createUser;
