@@ -64,13 +64,13 @@ while (menuChoice !== "exit") {
 
     case "apps":
       break;
-      
+
     default:
       break;
   }
 }
 
 
-// okta.createUser('Velvet', 'Velore', 'jessalder1989@gmail.com', `vv@${process.env.OKTA_DOMAIN}`, 'BloodyNights123');
+// okta.createUser('Velvet', 'Velore', 'vv@example.com', `vv@${process.env.OKTA_DOMAIN}`, 'BloodyNights123');
 // okta.createGroup('Vampires', 'A group for blood drinkers.');
 // okta.assignAppUser(process.env.VAMPIRE_APP_ID, process.env.VAMPIRE_USER_ID);
