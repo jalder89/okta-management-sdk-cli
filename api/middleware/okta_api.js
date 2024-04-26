@@ -1,11 +1,11 @@
 import createUser from "../create_user.js";
 import createGroup from "../create_group.js";
-import assignApp from "../assign_app.js";
+import assignAppUser from "../assign_app_user.js";
 
 const okta = {
     createUser,
     createGroup,
-    assignApp,
+    assignAppUser,
 }
 
 export default okta;

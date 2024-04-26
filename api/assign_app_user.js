@@ -1,6 +1,6 @@
 import axios from "axios";
 
-function assignApp(appID, userID) {
+function assignAppUser(appID, userID) {
     axios({
       url: `https://${process.env.OKTA_DOMAIN}/api/v1/apps/${appID}/users`,
       method: "POST",
@@ -16,4 +16,4 @@ function assignApp(appID, userID) {
     });
 }
 
-export default assignApp;
+export default assignAppUser;
