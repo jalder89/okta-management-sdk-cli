@@ -35,6 +35,7 @@ while (menuChoice !== "exit") {
           // ToDo: Update to be functional
           console.log(`User creation complete, please verify status.`);
           break;
+
         case "findUser":
           email = await inquire.inputMenu(
             "Enter the email of the user you wish to find: "
@@ -57,10 +58,13 @@ while (menuChoice !== "exit") {
           break;
       }
       break;
+
     case "groups":
       break;
+
     case "apps":
       break;
+      
     default:
       break;
   }
