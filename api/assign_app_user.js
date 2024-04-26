@@ -6,8 +6,8 @@ function assignAppUser(appID, userID) {
       method: "POST",
       headers: {
         "Authorization": `SSWS ${process.env.OKTA_API_TOKEN}`,
-        "Accept": "application/json",
-        "Content-Type": "application/json",
+        "Accept": 'application/json',
+        "Content-Type": 'application/json',
       },
       data: {
         id: userID,
