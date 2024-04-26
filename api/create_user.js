@@ -20,6 +20,8 @@ function createUser(firstName, lastName, email, login, password) {
           password: { value: password },
         },
       },
+    }).then(async function (response) {
+      console.log(await response);
     })
 }
 

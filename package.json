@@ -1,5 +1,5 @@
 {
-  "name": "test-app-1",
+  "name": "otka-core-api-cli",
   "type": "module",
   "version": "1.0.0",
   "description": "",
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@inquirer/prompts": "^5.0.2",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "express": "^4.19.2"
