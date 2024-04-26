@@ -1,4 +1,4 @@
-import { password, input, select, Separator } from '@inquirer/prompts';
+import { password, input, select, confirm, Separator } from '@inquirer/prompts';
 
 
 export async function inputMenu(message) {
@@ -12,6 +12,12 @@ export async function secureInputMenu(message) {
         message: message,
         mask: true,
     });
+}
+
+export async function confirmationMenu(message) {
+  return await confirm({
+    message: message,
+  })
 }
 
 export async function mainMenu(message, choices) {

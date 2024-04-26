@@ -7,6 +7,7 @@ import "dotenv/config";
 import * as inquire from './utils/inquirer-tools.js'
 import okta from "./api/middleware/okta_api.js";
 
+
 // Declerations
 let menuChoice = "";
 
@@ -14,7 +15,7 @@ while (menuChoice !== "exit") {
   // Present user with the main navigation menu
   menuChoice = await inquire.mainMenu();
   switch (menuChoice) {
-    // Present User CRUD Menu
+    // Present User CRUD menu
     case "users":
       menuChoice = await inquire.usersMenu();
       switch (menuChoice) {
@@ -30,10 +31,19 @@ while (menuChoice !== "exit") {
           );
           const password = await inquire.secureInputMenu(
             "Enter your password: "
-          );
-          okta.createUser(firstName, lastName, email, password);
-          // ToDo: Update to be functional
-          console.log(`User creation complete, please verify status.`);
+          )
+          const response = await okta.createUser(firstName, lastName, email, password)
+          if (response.statusText !== 'OK') {
+            console.log("User creation failed...");
+            break;
+          } 
+          console.log(`User ${response.data.profile.firstName} ${response.data.profile.lastName} was created successfully!`);
+          const activate = await inquire.confirmationMenu("Would you like to activate this user?");
+          if (activate) {
+            await okta.activateUser(response.data.id);
+          } else {
+            console.log(`User ${response.data.profile.firstName} ${response.data.profile.lastName} was not actived. Manage user manually.`);
+          }
           break;
 
         case "findUser":

@@ -1,8 +1,9 @@
 import axios from "axios";
 
-function createUser(firstName, lastName, email, login, password) {
-    axios({
-      url: `https://${process.env.OKTA_DOMAIN}/api/v1/users?activate=true`,
+async function createUser(firstName, lastName, email, login, password) {
+  try {
+    const response = axios({
+      url: `https://${process.env.OKTA_DOMAIN}/api/v1/users?activate=false`,
       method: "post",
       headers: {
         Accept: "application/json",
@@ -20,9 +21,11 @@ function createUser(firstName, lastName, email, login, password) {
           password: { value: password },
         },
       },
-    }).then(async function (response) {
-      console.log(await response);
-    })
+    });
+    return await response;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export default createUser;
