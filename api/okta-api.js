@@ -1,4 +1,5 @@
 import axios from "axios";
+import { response } from "express";
 
 async function createUser(firstName, lastName, email, login, password) {
   try {
@@ -28,20 +29,37 @@ async function createUser(firstName, lastName, email, login, password) {
   }
 }
 
+async function findUser(filter) {
+  try {
+    const response = axios({
+      url: `https://${process.env.OKTA_DOMAIN}/api/v1/users?search=${filter}`,
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `SSWS ${process.env.OKTA_API_TOKEN}`,
+      },
+    });
+    return await response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function activateUser(userID) {
-    try {
-        const response = axios({
-            url: `https://${process.env.OKTA_DOMAIN}/api/v1/users/${userID}/lifecycle/activate`,
-            method: 'post',
-            headers: {
-                "Authorization": `SSWS ${process.env.OKTA_API_TOKEN}`,
-                "Content-Type": 'application/json',
-                "Accept": 'application/json'
-            }
-        });
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+      const response = axios({
+          url: `https://${process.env.OKTA_DOMAIN}/api/v1/users/${userID}/lifecycle/activate`,
+          method: 'post',
+          headers: {
+              "Authorization": `SSWS ${process.env.OKTA_API_TOKEN}`,
+              "Content-Type": 'application/json',
+              "Accept": 'application/json'
+          }
+      });
+  } catch (error) {
+      console.log(error);
+  }
 }
 
 function assignAppUser(appID, userID) {
@@ -83,6 +101,7 @@ const okta = {
   createGroup,
   assignAppUser,
   activateUser,
+  findUser,
 };
 
 export default okta;

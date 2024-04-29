@@ -26,10 +26,7 @@ while (menuChoice !== "exit") {
           break;
 
         case "findUser":
-          email = await inquiry.inputMenu(
-            "Enter the email of the user you wish to find: "
-          );
-          console.log(email);
+          await inquiryFlows.findUser();
           break;
 
         case "updateUser":
