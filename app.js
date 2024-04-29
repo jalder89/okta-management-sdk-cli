@@ -4,7 +4,7 @@
 // ** This CLI is designed to help you manage Okta Users, Groups, and Apps ************* //
 // ************************************************************************************* //
 import "dotenv/config";
-import * as inquire from './utils/inquirer/inquiry-tools.js'
+import * as inquiry from './utils/inquirer/inquiry-tools.js'
 import inquiryConfigs from "./utils/inquirer/inquiry-configs.js";
 import inquiryFlows from "./utils/inquirer/inquiry-flows.js";
 
@@ -14,32 +14,33 @@ let menuChoice = "";
 
 while (menuChoice !== "exit") {
   // Present user with the main navigation menu
-  menuChoice = await inquire.selectMenu(inquiryConfigs.mainMenuConfig);
+  menuChoice = await inquiry.selectMenu(inquiryConfigs.mainMenuConfig);
   switch (menuChoice) {
     // Present User CRUD menu
     case "users":
-      menuChoice = await inquire.selectMenu(inquiryConfigs.userMenuConfig);
+      menuChoice = await inquiry.selectMenu(inquiryConfigs.userMenuConfig);
       switch (menuChoice) {
+        // Initiate user creation flow
         case "createUser":
           await inquiryFlows.createUser();
           break;
 
         case "findUser":
-          email = await inquire.inputMenu(
+          email = await inquiry.inputMenu(
             "Enter the email of the user you wish to find: "
           );
           console.log(email);
           break;
 
         case "updateUser":
-          email = await inquire.inputMenu(
+          email = await inquiry.inputMenu(
             "Enter the email of the user you wish to update: "
           );
           console.log(email);
           break;
 
         case "deleteUser":
-          email = await inquire.inputMenu(
+          email = await inquiry.inputMenu(
             "Enter the email of the user you wish to delete: "
           );
           console.log(email);
