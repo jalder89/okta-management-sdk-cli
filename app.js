@@ -5,7 +5,7 @@
 // ************************************************************************************* //
 import "dotenv/config";
 import * as inquire from './utils/inquirer-tools.js'
-import okta from "./api/middleware/okta_api.js";
+import okta from "./api/okta_api.js";
 
 
 // Declerations
