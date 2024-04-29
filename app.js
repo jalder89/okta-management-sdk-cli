@@ -4,8 +4,9 @@
 // ** This CLI is designed to help you manage Okta Users, Groups, and Apps ************* //
 // ************************************************************************************* //
 import "dotenv/config";
-import * as inquire from './utils/inquirer-tools.js'
-import okta from "./api/okta_api.js";
+import * as inquire from './utils/inquirer/inquiry-tools.js'
+import inquiryConfigs from "./utils/inquirer/inquiry-configs.js";
+import inquiryFlows from "./utils/inquirer/inquiry-flows.js";
 
 
 // Declerations
@@ -13,37 +14,14 @@ let menuChoice = "";
 
 while (menuChoice !== "exit") {
   // Present user with the main navigation menu
-  menuChoice = await inquire.mainMenu();
+  menuChoice = await inquire.selectMenu(inquiryConfigs.mainMenuConfig);
   switch (menuChoice) {
     // Present User CRUD menu
     case "users":
-      menuChoice = await inquire.usersMenu();
+      menuChoice = await inquire.selectMenu(inquiryConfigs.userMenuConfig);
       switch (menuChoice) {
         case "createUser":
-          const firstName = await inquire.inputMenu(
-            "Enter your first name: "
-          );
-          const lastName = await inquire.inputMenu(
-            "Enter your last name: "
-          );
-          const email = await inquire.inputMenu(
-            "Enter your email: "
-          );
-          const password = await inquire.secureInputMenu(
-            "Enter your password: "
-          )
-          const response = await okta.createUser(firstName, lastName, email, password)
-          if (response.statusText !== 'OK') {
-            console.log("User creation failed...");
-            break;
-          } 
-          console.log(`User ${response.data.profile.firstName} ${response.data.profile.lastName} was created successfully!`);
-          const activate = await inquire.confirmationMenu("Would you like to activate this user?");
-          if (activate) {
-            await okta.activateUser(response.data.id);
-          } else {
-            console.log(`User ${response.data.profile.firstName} ${response.data.profile.lastName} was not actived. Manage user manually.`);
-          }
+          await inquiryFlows.createUser();
           break;
 
         case "findUser":
@@ -65,6 +43,12 @@ while (menuChoice !== "exit") {
             "Enter the email of the user you wish to delete: "
           );
           console.log(email);
+          break;
+        
+        case "back":
+          break;
+        
+        default:
           break;
       }
       break;
