@@ -28,6 +28,14 @@ while (menuChoice !== "exit") {
         case "findUser":
           await inquiryFlows.findUser();
           break;
+        
+        case "assignGroup":
+          await inquiryFlows.assignGroup();
+          break;
+
+        case "assignAppUser":
+          await inquiryFlows.assignAppUser();
+          break;
 
         case "updateUser":
           email = await inquiry.inputMenu(
@@ -52,6 +60,41 @@ while (menuChoice !== "exit") {
       break;
 
     case "groups":
+      menuChoice = await inquiry.selectMenu(inquiryConfigs.groupMenuConfig);
+      switch (menuChoice) {
+        // Initiate group assignment flow
+        case "createGroup":
+          await inquiryFlows.assignGroup();
+          break;
+
+        case "findGroup":
+          await inquiryFlows.findUser();
+          break;
+
+        case "assignAppGroup":
+          await inquiryFlows.assignAppGroup();
+          break;
+
+        case "updateGroup":
+          email = await inquiry.inputMenu(
+            "Enter the id of the group you wish to update: "
+          );
+          console.log(email);
+          break;
+
+        case "deleteGroup":
+          email = await inquiry.inputMenu(
+            "Enter the id of the group you wish to delete: "
+          );
+          console.log(email);
+          break;
+        
+        case "back":
+          break;
+        
+        default:
+          break;
+      }
       break;
 
     case "apps":

@@ -9,14 +9,14 @@ const mainMenuConfig = {
             description: "User CRUD Actions",
         },
         {
+            name: "Groups",
+            value: "groups",
+            description: "Group CRUD Actions (Testing)",
+        },
+        {
             name: "Exit",
             value: "exit",
             description: "Exit CLI",
-        },
-        {
-            name: "Groups",
-            value: "groups",
-            disabled: "Group CRUD Actions (Unavailable)",
         },
         {
             name: "Apps",
@@ -33,17 +33,27 @@ const mainMenuConfig = {
 };
 
 const userMenuConfig = {
-    message: "Select an object type:",
+    message: "Select an action type:",
     choices: [
         {
             name: "Create User",
             value: "createUser",
-            description: "User CRUD Actions",
+            description: "Create User Action",
         },
         {
             name: "Find User",
             value: "findUser",
-            description: "Find User Action (Testing)",
+            description: "Find User Action (WIP)",
+        },
+        {
+            name: "Assign Group",
+            value: "assignGroup",
+            description: "Assign User to Group Action (WIP)",
+        },
+        {
+            name: "Assign App",
+            value: "assignAppUser",
+            description: "Assign User to App Action (WIP)",
         },
         {
             name: "Exit",
@@ -54,12 +64,12 @@ const userMenuConfig = {
         {
             name: "Update User",
             value: "updateUser",
-            disabled: "Update User Action (Unavailable)",
+            disabled: "Update User Action (WIP)",
         },
         {
             name: "Delete User",
             value: "deleteUser",
-            disabled: "Delete User Action (Unavailable)",
+            disabled: "Delete User Action (WIP)",
         },
     ],
 };
@@ -85,10 +95,43 @@ const findUserMenuConfig = {
   ],
 };
 
+const groupMenuConfig = {
+    message: "Select an action type:",
+    choices: [
+        {
+            name: "Assign App",
+            value: "assignAppGroup",
+            description: "Assign Group to App (WIP)",
+        },
+        {
+            name: "Exit",
+            value: "back",
+            description: "Exit User Menu (Go Back)",
+        },
+        new Separator(),
+        {
+            name: "Create Group",
+            value: "createGroup",
+            disabled: "Group CRUD Actions",
+        },
+        {
+            name: "Find Group",
+            value: "findGroup",
+            disabled: "Find User Action (Unavailable)",
+        },
+        {
+            name: "Delete Group",
+            value: "deleteGroup",
+            disabled: "Delete User Action (Unavailable)",
+        },
+    ],
+};
+
 const inquiryConfigs = {
     mainMenuConfig,
     userMenuConfig,
     findUserMenuConfig,
+    groupMenuConfig,
 }
 
 export default inquiryConfigs;

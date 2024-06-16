@@ -1,31 +1,34 @@
 import axios from "axios";
-import { response } from "express";
+import okta from '@okta/okta-sdk-nodejs';
 
-async function createUser(firstName, lastName, email, login, password) {
+
+const client = new okta.Client({
+  orgUrl: 'https://jessica-prod.com',
+  token: process.env.OKTA_API_TOKEN    // Obtained from Developer Dashboard
+});
+
+// User APIs 
+async function createUser(firstName, lastName, email, login, password, userid) {
+  const newUser = {
+    profile: {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      login: login,
+      userid: userid
+    },
+    credentials: {
+      password: {
+        value: password
+      }
+    }
+  };
+  
   try {
-    const response = axios({
-      url: `https://${process.env.OKTA_DOMAIN}/api/v1/users?activate=false`,
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `SSWS ${process.env.OKTA_API_TOKEN}`,
-      },
-      data: {
-        profile: {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          login: email,
-        },
-        credentials: {
-          password: { value: password },
-        },
-      },
-    });
-    return await response;
+    const user = await client.userApi.createUser({ body: newUser });
+    console.log('Created user', user);
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
@@ -62,20 +65,51 @@ async function activateUser(userID) {
   }
 }
 
-function assignAppUser(appID, userID) {
-  axios({
-    url: `https://${process.env.OKTA_DOMAIN}/api/v1/apps/${appID}/users`,
-    method: "POST",
-    headers: {
-      Authorization: `SSWS ${process.env.OKTA_API_TOKEN}`,
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    data: {
-      id: userID,
-      scope: "USER",
-    },
-  });
+async function deactivateUser(userID) {
+  await client.userApi.deactivateUser({ userId: userID });
+}
+
+async function deleteUser(userID) {
+  await client.userApi.deactivateUser({ userId: userID });
+  await client.userApi.deleteUser({ userId: userID });
+}
+
+async function assignAppUser(appID, userID) {
+  try {
+    const appUser = await client.applicationApi.assignUserToApplication({
+      appId: appID,
+      appUser: {
+        id:userID
+      }
+    });
+    console.log('Assigned user to app, app user instance:', appUser);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+// Group APIs
+async function assignAppGroup(appID, groupID) {
+  try {
+    const assignment = await client.applicationApi.assignGroupToApplication({
+      appId: appID, 
+      groupId: groupID, 
+      applicationGroupAssignment: {}
+    });
+    console.log('Assignment:', assignment);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function assignGroupUser(groupID, userID) {
+  try {
+    await client.groupApi.assignUserToGroup({ groupId: groupID, userId: userID });
+    console.log('User has been added to group');
+  } catch (error) {
+    console.log(`Status: ${error.status} - ${error.errorSummary}`)
+  }
 }
 
 function createGroup(groupName, description) {
@@ -96,12 +130,16 @@ function createGroup(groupName, description) {
   });
 }
 
-const okta = {
-  createUser,
-  createGroup,
-  assignAppUser,
-  activateUser,
+const oktaAPI = {
   findUser,
+  createUser,
+  activateUser,
+  deactivateUser,
+  deleteUser,
+  assignAppUser,
+  assignGroupUser,
+  createGroup,
+  assignAppGroup,
 };
 
-export default okta;
+export default oktaAPI;

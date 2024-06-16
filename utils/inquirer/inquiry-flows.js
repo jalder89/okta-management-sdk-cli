@@ -1,8 +1,9 @@
 import * as inquiry from './inquiry-tools.js'
-import okta from '../../api/okta-api.js';
+import oktaAPI from '../../api/okta-api.js';
 import inquiryConfigs from './inquiry-configs.js';
-import { response } from 'express';
 
+
+// ----- User flows -----
 async function createUser() {
     // Gather required user info for creation
     const firstName = await inquiry.inputMenu(
@@ -14,22 +15,21 @@ async function createUser() {
     const email = await inquiry.inputMenu(
         "Enter your email: "
     );
+    const login = await inquiry.inputMenu(
+        "Enter your login username (email format): "
+    );
     const password = await inquiry.secureInputMenu(
         "Enter your password: "
     )
+    const userid = await inquiry.inputMenu(
+        "Enter your desired userid (j.doe): "
+    )
+
     // Attempt to create user
-    const response = await okta.createUser(firstName, lastName, email, password)
-    if (response.statusText !== 'OK') {
-    console.log("User creation failed...");
-    return;
-    } 
-    console.log(`User ${response.data.profile.firstName} ${response.data.profile.lastName} was created successfully!`);
-    // Prompt for user activation
-    const activate = await inquiry.confirmationMenu("Would you like to activate this user?");
-    if (activate) {
-        await okta.activateUser(response.data.id);
-    } else {
-        console.log(`User ${response.data.profile.firstName} ${response.data.profile.lastName} was not actived. Manage user manually.`);
+    try {
+        await oktaAPI.createUser(firstName, lastName, email, login, password, userid)
+    } catch (error) {
+        console.log(error)
     }
 }
 
@@ -68,9 +68,59 @@ async function findUser() {
     }
 }
 
+async function assignGroup() {
+    // Attempt to assign a user to a group
+    // Gather required info for assignment
+    const groupID = await inquiry.inputMenu(
+        "Enter Group ID: "
+    );
+    const userID = await inquiry.inputMenu(
+        "Enter User ID: "
+    );
+    try {
+        await oktaAPI.assignGroupUser(groupID, userID)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function assignAppUser() {
+    // Gather required info for assignment
+    const appID = await inquiry.inputMenu(
+        "Enter App ID: "
+    );
+    const userID = await inquiry.inputMenu(
+        "Enter User ID: "
+    );
+    try {
+        await oktaAPI.assignAppUser(appID, userID)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// ----- Groups Flows -----
+async function assignAppGroup() {
+    // Gather required info for assignment
+    const appID = await inquiry.inputMenu(
+        "Enter App ID: "
+    );
+    const groupID = await inquiry.inputMenu(
+        "Enter Group ID: "
+    );
+    try {
+        await oktaAPI.assignAppGroup(appID, groupID)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const inquiryFlows = {
     createUser,
     findUser,
+    assignGroup,
+    assignAppUser,
+    assignAppGroup,
 };
 
 export default inquiryFlows;
