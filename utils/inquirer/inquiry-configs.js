@@ -41,9 +41,14 @@ const userMenuConfig = {
             description: "Create User Action",
         },
         {
+            name: "Get User",
+            value: "getUser",
+            description: "Get User by Login Action (WIP)",
+        },
+        {
             name: "Find User",
             value: "findUser",
-            description: "Find User Action (WIP)",
+            description: "Find User by Filter Action (WIP)",
         },
         {
             name: "Assign Group",
@@ -54,6 +59,16 @@ const userMenuConfig = {
             name: "Assign App",
             value: "assignAppUser",
             description: "Assign User to App Action (WIP)",
+        },
+        {
+            name: "Deactivate User",
+            value: "deactivateUser",
+            description: "Deactivate User Action (DANGER)",
+        },
+        {
+            name: "Delete User",
+            value: "deleteUser",
+            description: "Delete User Action (DANGER)",
         },
         {
             name: "Exit",

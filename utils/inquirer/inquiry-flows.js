@@ -33,6 +33,18 @@ async function createUser() {
     }
 }
 
+async function getUser() {
+    const login = await inquiry.inputMenu(
+        "Enter the login for the user: "
+    );
+    try {
+        const user = await oktaAPI.getUser(login);
+        return user;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 async function findUser() {
     const menuChoice = await inquiry.selectMenu(inquiryConfigs.findUserMenuConfig);
     switch (menuChoice) {
@@ -99,6 +111,29 @@ async function assignAppUser() {
     }
 }
 
+async function deactivateUser() {
+    // Gather required info for deactivation
+    const userID = await inquiry.inputMenu(
+        "Enter User ID of user to deactivate: "
+    );
+    await oktaAPI.deactivateUser(userID)
+}
+
+async function deleteUser() {
+    const user = await getUser()
+    if (!user) {
+        console.log("User does not exist or could not be fetched for deletion.")
+    };
+
+    // User must be deactivated before deletion
+    if (user.status == "ACTIVE") {
+        await deactivateUser();
+        await oktaAPI.deleteUser(user.id);
+    } else if (user.status == "DEPROVISIONED") {
+        await oktaAPI.deleteUser(user.id);
+    }
+}
+
 // ----- Groups Flows -----
 async function assignAppGroup() {
     // Gather required info for assignment
@@ -120,6 +155,8 @@ const inquiryFlows = {
     findUser,
     assignGroup,
     assignAppUser,
+    deactivateUser,
+    deleteUser,
     assignAppGroup,
 };
 

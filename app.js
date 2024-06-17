@@ -44,11 +44,12 @@ while (menuChoice !== "exit") {
           console.log(email);
           break;
 
+        case "deactivateUser":
+          await inquiryFlows.deactivateUser();
+          break;
+
         case "deleteUser":
-          email = await inquiry.inputMenu(
-            "Enter the email of the user you wish to delete: "
-          );
-          console.log(email);
+          await inquiryFlows.deleteUser();
           break;
         
         case "back":

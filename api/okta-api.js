@@ -32,6 +32,15 @@ async function createUser(firstName, lastName, email, login, password, userid) {
   }
 }
 
+async function getUser(login) {
+  try {
+    let user = await client.userApi.getUser({ userId: login });
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function findUser(filter) {
   try {
     const response = axios({
@@ -48,6 +57,7 @@ async function findUser(filter) {
     console.log(error);
   }
 }
+
 
 async function activateUser(userID) {
   try {
@@ -66,12 +76,21 @@ async function activateUser(userID) {
 }
 
 async function deactivateUser(userID) {
-  await client.userApi.deactivateUser({ userId: userID });
+  try {
+    await client.userApi.deactivateUser({ userId: userID });
+    console.log("User successfully deactivated.");
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function deleteUser(userID) {
-  await client.userApi.deactivateUser({ userId: userID });
-  await client.userApi.deleteUser({ userId: userID });
+  try {
+    await client.userApi.deleteUser({ userId: userID });
+    console.log("User successfully deleted.");
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function assignAppUser(appID, userID) {
@@ -84,7 +103,7 @@ async function assignAppUser(appID, userID) {
     });
     console.log('Assigned user to app, app user instance:', appUser);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -99,7 +118,7 @@ async function assignAppGroup(appID, groupID) {
     });
     console.log('Assignment:', assignment);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -131,6 +150,7 @@ function createGroup(groupName, description) {
 }
 
 const oktaAPI = {
+  getUser,
   findUser,
   createUser,
   activateUser,
